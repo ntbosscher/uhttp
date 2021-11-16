@@ -13,7 +13,7 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"net/http/internal/ascii"
+	"github.com/ntbosscher/uhttp/internal/ascii"
 	"net/textproto"
 	"net/url"
 	"strings"

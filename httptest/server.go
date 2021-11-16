@@ -14,7 +14,7 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"net/http/internal/testcert"
+	"github.com/ntbosscher/uhttp/internal/testcert"
 	"os"
 	"strings"
 	"sync"

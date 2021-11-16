@@ -25,7 +25,7 @@ import (
 	"net/http/httptest"
 	"net/http/httputil"
 	"net/http/internal"
-	"net/http/internal/testcert"
+	"github.com/ntbosscher/uhttp/internal/testcert"
 	"net/url"
 	"os"
 	"os/exec"

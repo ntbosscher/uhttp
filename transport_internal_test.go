@@ -12,7 +12,7 @@ import (
 	"errors"
 	"io"
 	"net"
-	"net/http/internal/testcert"
+	"github.com/ntbosscher/uhttp/internal/testcert"
 	"strings"
 	"testing"
 )

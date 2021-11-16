@@ -30,7 +30,7 @@ import (
 	"net/http/httptest"
 	"net/http/httptrace"
 	"net/http/httputil"
-	"net/http/internal/testcert"
+	"github.com/ntbosscher/uhttp/internal/testcert"
 	"net/textproto"
 	"net/url"
 	"os"

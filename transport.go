@@ -17,11 +17,11 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"github.com/ntbosscher/uhttp/internal/ascii"
 	"io"
 	"log"
 	"net"
 	"net/http/httptrace"
-	"net/http/internal/ascii"
 	"net/textproto"
 	"net/url"
 	"os"
@@ -1557,6 +1557,11 @@ type erringRoundTripper interface {
 	RoundTripErr() error
 }
 
+type TLSConn interface {
+	HandshakeContext(ctx context.Context) error
+	ConnectionState() tls.ConnectionState
+}
+
 func (t *Transport) dialConn(ctx context.Context, cm connectMethod) (pconn *persistConn, err error) {
 	pconn = &persistConn{
 		t:             t,
@@ -1581,7 +1586,7 @@ func (t *Transport) dialConn(ctx context.Context, cm connectMethod) (pconn *pers
 		if err != nil {
 			return nil, wrapErr(err)
 		}
-		if tc, ok := pconn.conn.(*tls.Conn); ok {
+		if tc, ok := pconn.conn.(TLSConn); ok {
 			// Handshake here, in case DialTLS didn't. TLSNextProto below
 			// depends on it for knowing the connection state.
 			if trace != nil && trace.TLSHandshakeStart != nil {

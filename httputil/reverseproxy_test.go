@@ -16,7 +16,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"net/http/internal/ascii"
+	"github.com/ntbosscher/uhttp/internal/ascii"
 	"net/url"
 	"os"
 	"reflect"

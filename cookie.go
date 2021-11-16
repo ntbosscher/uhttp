@@ -5,9 +5,9 @@
 package http
 
 import (
+	"github.com/ntbosscher/uhttp/internal/ascii"
 	"log"
 	"net"
-	"net/http/internal/ascii"
 	"net/textproto"
 	"strconv"
 	"strings"
