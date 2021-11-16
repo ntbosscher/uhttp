@@ -209,7 +209,7 @@ func TestTransportBodyAltRewind(t *testing.T) {
 				t.Error(err)
 				return
 			}
-			if err := sc.(*tls.Conn).Handshake(); err != nil {
+			if err := sc.(TLSConn).Handshake(); err != nil {
 				t.Error(err)
 				return
 			}
@@ -222,8 +222,8 @@ func TestTransportBodyAltRewind(t *testing.T) {
 	roundTripped := false
 	tr := &Transport{
 		DisableKeepAlives: true,
-		TLSNextProto: map[string]func(string, *tls.Conn) RoundTripper{
-			"foo": func(authority string, c *tls.Conn) RoundTripper {
+		TLSNextProto: map[string]func(string, TLSConn) RoundTripper{
+			"foo": func(authority string, c TLSConn) RoundTripper {
 				return roundTripFunc(func(r *Request) (*Response, error) {
 					n, _ := io.Copy(io.Discard, r.Body)
 					if n == 0 {
