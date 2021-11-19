@@ -109,6 +109,10 @@ type Transport struct {
 	connsPerHost     map[connectMethodKey]int
 	connsPerHostWait map[connectMethodKey]wantConnQueue // waiting getConns
 
+	// GetTLSClient converts the plain connection into a tls connection
+	// if not used, tls.NewClient() will be used
+	GetTLSClient func(conn net.Conn, cfg *tls.Config) TLSConn
+
 	// Proxy specifies a function to return a proxy for a given
 	// Request. If the function returns a non-nil error, the
 	// request is aborted with the provided error.
@@ -1519,7 +1523,15 @@ func (pconn *persistConn) addTLS(ctx context.Context, name string, trace *httptr
 		cfg.NextProtos = nil
 	}
 	plainConn := pconn.conn
-	tlsConn := tls.Client(plainConn, cfg)
+
+	// Nate: use GetTLSClient to allow us to mock out the tls.Client
+	var tlsConn TLSConn
+	if pconn.t.GetTLSClient != nil {
+		tlsConn = pconn.t.GetTLSClient(plainConn, cfg)
+	} else {
+		tlsConn = tls.Client(plainConn, cfg)
+	}
+
 	errc := make(chan error, 2)
 	var timer *time.Timer // for canceling TLS handshake
 	if d := pconn.t.TLSHandshakeTimeout; d != 0 {
